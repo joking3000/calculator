@@ -36,3 +36,17 @@ function operate(operator, a, b) {
       return "Error";
   }
 }
+
+
+
+let numKeys = [...document.querySelectorAll(".key.num")];
+let displayText = document.querySelector(".display p");
+
+numKeys.forEach(key => key.addEventListener("click", numKeyPress))
+let inputArray = [];
+
+function numKeyPress(e) {
+  console.log(this.dataset.key)
+  displayText.textContent += this.dataset.key;
+  inputArray.push(this.dataset.key)
+}
