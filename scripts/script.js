@@ -8,6 +8,7 @@ let inputArray = [];
 let firstNum = false;
 let currentOperation = "none"
 let storedNum = false;
+let afterOperate = false;
 
 
 function add(a, b) {
@@ -58,9 +59,10 @@ function operationKeyPress() {
     firstNum = Number(inputArray.join(""));
     currentOperation = this.dataset.key;
     inputArray = [];
-  }
-    ////NEED TO FACTOR IN OPERATION OF STORED NUMBER AFTER EQUALS.... HERE....
-  else if (inputArray.length === 0 && currentOperation === this.dataset.key) {
+  } else if (afterOperate) {
+    currentOperation = this.dataset.key;
+    storedNum = false;
+  } else if (inputArray.length === 0 && currentOperation === this.dataset.key) {
     firstNum = operate(currentOperation, firstNum, firstNum)
     displayText.textContent = firstNum;
   } else if (inputArray.length === 0) {
@@ -72,6 +74,7 @@ function operationKeyPress() {
     currentOperation = this.dataset.key;
     inputArray = [];
   }
+  afterOperate = false;
 }
 
 function operatePress() {
@@ -89,6 +92,7 @@ function operatePress() {
     firstNum = operate(currentOperation, firstNum, storedNum);
     displayText.textContent = firstNum;
   }
+  afterOperate = true;
 }
 
 function clearPress() {
@@ -97,6 +101,7 @@ function clearPress() {
   currentOperation = "none"
   displayText.textContent = "";
   storedNum = false;
+  afterOperate = false;
 }
 
 
