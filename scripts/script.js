@@ -65,14 +65,24 @@ function operatePress() {
     firstNum = operate(currentOperation, firstNum, secondNum);
     displayText.textContent = firstNum;
     inputArray = [];
+  } else if (currentOperation !== "none") {
+    firstNum = operate(currentOperation, firstNum, firstNum);
+    displayText.textContent = firstNum;
   }
+}
+
+function clearPress() {
+  inputArray = [];
+  firstNum = false;
+  currentOperation = "none"
+  displayText.textContent = "";
 }
 
 
 numKeys.forEach(key => key.addEventListener("click", numKeyPress))
 operationKeys.forEach(key => key.addEventListener("click", operationKeyPress))
 operateKey.addEventListener("click", operatePress);
-
+clearKey.addEventListener("click", clearPress);
 
 
 ///
