@@ -30,7 +30,7 @@ div {
   padding: 14px;
 }
 
-.function {
+.function, .operate{
   grid-column: auto / -1;
 }
 

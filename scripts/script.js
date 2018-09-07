@@ -1,4 +1,12 @@
-
+let numKeys = [...document.querySelectorAll(".key.num")];
+let displayText = document.querySelector(".display p");
+let operationKeys = [...document.querySelectorAll(".key.function")];
+let operateKey = document.querySelector(".operate");
+let clearKey = document.querySelector(".clear");
+/////
+let inputArray = [];
+let firstNum = false;
+let currentOperation = "none"
 
 
 function add(a, b) {
@@ -38,15 +46,33 @@ function operate(operator, a, b) {
 }
 
 
-
-let numKeys = [...document.querySelectorAll(".key.num")];
-let displayText = document.querySelector(".display p");
-
-numKeys.forEach(key => key.addEventListener("click", numKeyPress))
-let inputArray = [];
-
-function numKeyPress(e) {
-  console.log(this.dataset.key)
+function numKeyPress() {
   displayText.textContent += this.dataset.key;
   inputArray.push(this.dataset.key)
 }
+
+function operationKeyPress() {
+  if (!firstNum) {
+    firstNum = Number(inputArray.join(""));
+    currentOperation = this.dataset.key;
+    inputArray = [];
+  }
+}
+
+function operatePress() {
+  if (inputArray.length > 0 && currentOperation !== "none") {
+    let secondNum = Number(inputArray.join(""));
+    firstNum = operate(currentOperation, firstNum, secondNum);
+    displayText.textContent = firstNum;
+    inputArray = [];
+  }
+}
+
+
+numKeys.forEach(key => key.addEventListener("click", numKeyPress))
+operationKeys.forEach(key => key.addEventListener("click", operationKeyPress))
+operateKey.addEventListener("click", operatePress);
+
+
+
+///
