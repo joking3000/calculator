@@ -7,6 +7,7 @@ let clearKey = document.querySelector(".clear");
 let inputArray = [];
 let firstNum = false;
 let currentOperation = "none"
+let storedNum = false;
 
 
 function add(a, b) {
@@ -47,6 +48,7 @@ function operate(operator, a, b) {
 
 
 function numKeyPress() {
+  if (inputArray.length === 0) displayText.textContent = "";
   displayText.textContent += this.dataset.key;
   inputArray.push(this.dataset.key)
 }
@@ -57,16 +59,34 @@ function operationKeyPress() {
     currentOperation = this.dataset.key;
     inputArray = [];
   }
-}
-
-function operatePress() {
-  if (inputArray.length > 0 && currentOperation !== "none") {
+    ////NEED TO FACTOR IN OPERATION OF STORED NUMBER AFTER EQUALS.... HERE....
+  else if (inputArray.length === 0 && currentOperation === this.dataset.key) {
+    firstNum = operate(currentOperation, firstNum, firstNum)
+    displayText.textContent = firstNum;
+  } else if (inputArray.length === 0) {
+    currentOperation = this.dataset.key;
+  } else {
     let secondNum = Number(inputArray.join(""));
     firstNum = operate(currentOperation, firstNum, secondNum);
     displayText.textContent = firstNum;
+    currentOperation = this.dataset.key;
     inputArray = [];
-  } else if (currentOperation !== "none") {
-    firstNum = operate(currentOperation, firstNum, firstNum);
+  }
+}
+
+function operatePress() {
+  if (currentOperation === "none") return;
+  if (inputArray.length > 0) {
+    storedNum = Number(inputArray.join(""));
+    firstNum = operate(currentOperation, firstNum, storedNum);
+    displayText.textContent = firstNum;
+    inputArray = [];
+  } else if (!storedNum) {
+    storedNum = firstNum
+    firstNum = operate(currentOperation, firstNum, storedNum);
+    displayText.textContent = firstNum;
+  } else {
+    firstNum = operate(currentOperation, firstNum, storedNum);
     displayText.textContent = firstNum;
   }
 }
@@ -76,6 +96,7 @@ function clearPress() {
   firstNum = false;
   currentOperation = "none"
   displayText.textContent = "";
+  storedNum = false;
 }
 
 
